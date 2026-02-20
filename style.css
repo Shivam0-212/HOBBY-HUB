@@ -1,0 +1,282 @@
+:root{
+  --bg:#0b1220;
+  --card:#121c30;
+  --card2:#0f182b;
+  --text:#eaf0ff;
+  --muted:#9fb0d3;
+  --line:rgba(255,255,255,0.08);
+  --accent:#4c7dff;
+  --danger:#ff4c6a;
+  --ok:#2fe28d;
+  --shadow: 0 18px 60px rgba(0,0,0,0.35);
+}
+
+*{box-sizing:border-box}
+body{
+  margin:0;
+  font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial;
+  background: radial-gradient(1000px 700px at 20% 0%, rgba(76,125,255,0.25), transparent 60%),
+              radial-gradient(900px 600px at 90% 10%, rgba(47,226,141,0.12), transparent 55%),
+              var(--bg);
+  color:var(--text);
+}
+
+.hidden{display:none !important}
+.screen{display:none; padding:28px}
+.screen.active{display:block}
+
+.topbar{
+  position:sticky; top:0; z-index:50;
+  display:flex; align-items:center; justify-content:space-between;
+  padding:14px 18px;
+  border-bottom:1px solid var(--line);
+  background:rgba(11,18,32,0.75);
+  backdrop-filter: blur(14px);
+}
+
+.logo{display:flex; align-items:center; gap:10px}
+.logo h1{font-size:18px; margin:0; letter-spacing:0.3px}
+.dot{
+  width:14px; height:14px; border-radius:50%;
+  background:linear-gradient(135deg, var(--accent), var(--ok));
+  box-shadow:0 0 20px rgba(76,125,255,0.35);
+}
+
+.search{flex:1; max-width:520px; margin:0 18px}
+.search input{
+  width:100%;
+  padding:12px 14px;
+  border-radius:14px;
+  border:1px solid var(--line);
+  background:rgba(18,28,48,0.8);
+  color:var(--text);
+  outline:none;
+}
+.search input::placeholder{color:rgba(159,176,211,0.75)}
+
+.top-actions{display:flex; gap:10px}
+
+.btn{
+  border:none;
+  cursor:pointer;
+  padding:10px 14px;
+  border-radius:14px;
+  background:var(--accent);
+  color:white;
+  font-weight:700;
+  transition:0.2s;
+}
+.btn:hover{transform: translateY(-1px); filter:brightness(1.05)}
+.btn.full{width:100%}
+.btn.ghost{
+  background:transparent;
+  border:1px solid var(--line);
+  color:var(--text);
+}
+.btn.danger{background:var(--danger)}
+
+.auth-card{
+  max-width:520px;
+  margin:60px auto;
+  background:rgba(18,28,48,0.75);
+  border:1px solid var(--line);
+  border-radius:22px;
+  padding:22px;
+  box-shadow: var(--shadow);
+}
+
+.auth-card h2{margin:0 0 8px}
+.muted{color:var(--muted)}
+.small{font-size:13px}
+
+.tabs{
+  display:flex;
+  gap:10px;
+  margin:16px 0 14px;
+}
+.tab{
+  flex:1;
+  padding:10px;
+  border-radius:14px;
+  border:1px solid var(--line);
+  background:transparent;
+  color:var(--text);
+  cursor:pointer;
+  font-weight:800;
+}
+.tab.active{
+  background:rgba(76,125,255,0.18);
+  border-color: rgba(76,125,255,0.35);
+}
+
+.formbox label{display:block; margin:12px 0 6px; font-weight:700}
+.formbox input, .formbox select, textarea{
+  width:100%;
+  padding:12px 12px;
+  border-radius:14px;
+  border:1px solid var(--line);
+  background:rgba(15,24,43,0.8);
+  color:var(--text);
+  outline:none;
+}
+textarea{min-height:90px; resize:vertical}
+
+.panel{
+  max-width:900px;
+  margin:30px auto;
+  background:rgba(18,28,48,0.75);
+  border:1px solid var(--line);
+  border-radius:22px;
+  padding:22px;
+  box-shadow: var(--shadow);
+}
+
+.hobby-grid{
+  display:grid;
+  grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+  gap:12px;
+  margin:18px 0;
+}
+
+.hobby{
+  padding:14px;
+  border-radius:18px;
+  border:1px solid var(--line);
+  background:rgba(15,24,43,0.75);
+  cursor:pointer;
+  transition:0.2s;
+}
+.hobby:hover{transform: translateY(-2px)}
+.hobby.selected{
+  border-color: rgba(47,226,141,0.45);
+  background:rgba(47,226,141,0.10);
+}
+
+.layout{
+  display:grid;
+  grid-template-columns: 280px 1fr 330px;
+  gap:16px;
+  max-width:1300px;
+  margin:0 auto;
+}
+
+.sidebar, .right{
+  position:sticky;
+  top:84px;
+  height: calc(100vh - 110px);
+  overflow:auto;
+  padding-right:6px;
+}
+
+.card{
+  background:rgba(18,28,48,0.75);
+  border:1px solid var(--line);
+  border-radius:22px;
+  padding:16px;
+  box-shadow: 0 10px 35px rgba(0,0,0,0.25);
+  margin-bottom:14px;
+}
+
+.profile{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  margin-bottom:14px;
+}
+.avatar{
+  width:44px; height:44px;
+  border-radius:50%;
+  background:linear-gradient(135deg, rgba(76,125,255,0.9), rgba(47,226,141,0.9));
+}
+
+.side-section{margin-bottom:14px}
+.side-section h4{margin:0 0 10px}
+
+.chips{display:flex; flex-wrap:wrap; gap:8px}
+.chip{
+  padding:7px 10px;
+  border-radius:999px;
+  border:1px solid var(--line);
+  background:rgba(15,24,43,0.75);
+  font-weight:700;
+  font-size:13px;
+}
+
+.list .item{
+  padding:10px 12px;
+  border-radius:16px;
+  border:1px solid var(--line);
+  background:rgba(15,24,43,0.65);
+  margin-bottom:10px;
+  cursor:pointer;
+  font-weight:800;
+}
+.list .item.active{
+  border-color: rgba(76,125,255,0.35);
+  background:rgba(76,125,255,0.12);
+}
+
+.feed .post{
+  padding:14px;
+  border-radius:20px;
+  border:1px solid var(--line);
+  background:rgba(15,24,43,0.65);
+  margin-bottom:12px;
+}
+.post .meta{
+  display:flex;
+  justify-content:space-between;
+  gap:10px;
+  margin-bottom:8px;
+}
+.badge{
+  font-size:12px;
+  padding:5px 9px;
+  border-radius:999px;
+  border:1px solid var(--line);
+  color:var(--muted);
+}
+.row{display:flex; gap:10px; align-items:center}
+.row.space{justify-content:space-between}
+
+.stack .box{
+  padding:12px;
+  border-radius:18px;
+  border:1px solid var(--line);
+  background:rgba(15,24,43,0.65);
+  margin-bottom:10px;
+}
+.stack a{color:var(--text); text-decoration:none}
+.stack a:hover{text-decoration:underline}
+
+.modal-overlay{
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,0.55);
+  z-index:100;
+}
+
+.modal{
+  position:fixed;
+  top:50%;
+  left:50%;
+  transform: translate(-50%, -50%);
+  width:min(720px, 92vw);
+  background:rgba(18,28,48,0.95);
+  border:1px solid var(--line);
+  border-radius:22px;
+  padding:18px;
+  box-shadow: var(--shadow);
+  z-index:110;
+}
+
+.admin-grid{
+  display:grid;
+  grid-template-columns: 1fr 1fr;
+  gap:14px;
+}
+
+@media(max-width:1100px){
+  .layout{grid-template-columns: 1fr}
+  .sidebar, .right{position:relative; top:auto; height:auto}
+}
