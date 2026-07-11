@@ -1,0 +1,40 @@
+<header class="site-header">
+  <div class="container">
+    <div class="logo"><a href="/">🎯 Hobby Hub</a></div>
+    <nav class="main-nav" aria-label="Main Navigation">
+      <ul class="nav-list">
+        <li><a href="/home"      class="nav-link <%= locals.active==='home'      ? 'active':'' %>">Home</a></li>
+        <li><a href="/explore"   class="nav-link <%= locals.active==='explore'   ? 'active':'' %>">Explore</a></li>
+        <li><a href="/add"       class="nav-link <%= locals.active==='add'       ? 'active':'' %>">Add Hobby</a></li>
+        <li><a href="/community" class="nav-link <%= locals.active==='community' ? 'active':'' %>">Community</a></li>
+        <li><a href="/dashboard" class="nav-link <%= locals.active==='dashboard' ? 'active':'' %>">Dashboard</a></li>
+        <li><a href="/about"     class="nav-link <%= locals.active==='about'     ? 'active':'' %>">About</a></li>
+        <% if (!user) { %>
+          <li><a href="/login"   class="nav-link">Login</a></li>
+        <% } %>
+      </ul>
+      <% if (user) { %>
+        <div class="profile-wrapper">
+          <button class="profile-avatar-btn" onclick="toggleProfileMenu(event)" aria-label="Profile menu">
+            <%= user.username.charAt(0).toUpperCase() %>
+          </button>
+          <div class="profile-dropdown-menu" id="profileMenu">
+            <div class="profile-info-header">
+              <div class="profile-avatar-sm"><%= user.username.charAt(0).toUpperCase() %></div>
+              <div>
+                <strong style="display:block;color:#e2e8f0;font-size:0.9rem;"><%= user.name || user.username %></strong>
+                <small style="color:#64748b;font-size:0.72rem;">@<%= user.username %></small>
+                <small style="display:block;color:#475569;font-size:0.68rem;"><%= user.email %></small>
+              </div>
+            </div>
+            <div class="profile-menu-divider"></div>
+            <a href="/profile" class="profile-menu-item">✏️ Edit Profile & Name</a>
+            <a href="/profile#change-password" class="profile-menu-item">🔐 Change Password</a>
+            <div class="profile-menu-divider"></div>
+            <a href="/logout" class="profile-menu-item profile-menu-logout">🚪 Logout</a>
+          </div>
+        </div>
+      <% } %>
+    </nav>
+  </div>
+</header>

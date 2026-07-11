@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- ==============================
+       META & HEAD SECTION
+  ============================== -->
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title><%= title %></title>
+  <link rel="stylesheet" href="/style.css" />
+</head>
+
+<body>
+
+  <!-- ==============================
+       HEADER & NAVIGATION
+  ============================== -->
+  <%- include('partials/navbar', { active: 'dashboard' }) %>
+
+  <!-- ==============================
+       MAIN CONTENT
+  ============================== -->
+  <main>
+
+    <!-- Page Hero / Banner -->
+    <section class="page-hero" aria-label="Page Header">
+      <div class="container">
+        <h1>Dashboard</h1>
+        <p>An overview of all hobbies, categories, and statistics in Hobby Hub.</p>
+      </div>
+    </section>
+
+    <!-- ==============================
+         STATS CARDS SECTION
+         Summary statistics displayed as cards
+    ============================== -->
+    <section class="stats-section" aria-label="Statistics Overview">
+      <div class="container">
+        <div class="stats-grid">
+
+          <!-- Total Hobbies Stat -->
+          <div class="stat-card">
+            <div class="stat-icon">🎯</div>
+            <div class="stat-info">
+              <span class="stat-number"><%= totalHobbies %></span>
+              <span class="stat-label">Total Hobbies</span>
+            </div>
+          </div>
+
+          <!-- Total Categories Stat -->
+          <div class="stat-card">
+            <div class="stat-icon">📂</div>
+            <div class="stat-info">
+              <span class="stat-number"><%= categoryStats.length %></span>
+              <span class="stat-label">Categories</span>
+            </div>
+          </div>
+
+          <!-- Most Popular Category Stat -->
+          <div class="stat-card">
+            <div class="stat-icon">⭐</div>
+            <div class="stat-info">
+              <span class="stat-number"><%= popularCategory ? popularCategory.name : 'N/A' %></span>
+              <span class="stat-label">Top Category</span>
+            </div>
+          </div>
+
+          <!-- Beginner Friendly Stat -->
+          <div class="stat-card">
+            <div class="stat-icon">🌱</div>
+            <div class="stat-info">
+              <span class="stat-number"><%= difficultyCounts['Beginner'] || 0 %></span>
+              <span class="stat-label">Beginner Hobbies</span>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ==============================
+         CATEGORY BREAKDOWN SECTION
+         Shows hobby count per category
+    ============================== -->
+    <section class="category-section" aria-label="Hobbies by Category">
+      <div class="container">
+        <div class="section-header">
+          <h2 class="section-title">Hobbies by Category</h2>
+        </div>
+
+        <div class="category-list">
+          <!--
+            EJS Loop: Render category stats
+            categoryStats is an array of { name, count } objects
+          -->
+          <% categoryStats.forEach(function(cat) { %>
+            <div class="category-item">
+              <div class="category-name">
+                <a href="/explore?category=<%= encodeURIComponent(cat.name) %>"><%= cat.name %></a>
+              </div>
+              <!-- Visual bar to show relative count -->
+              <div class="category-bar">
+                <div
+                  class="category-fill"
+                  style="width: <%= Math.round((cat.count / totalHobbies) * 100) %>%"
+                ></div>
+              </div>
+              <div class="category-count"><%= cat.count %> hobbies</div>
+            </div>
+          <% }); %>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==============================
+         ALL HOBBIES TABLE SECTION
+         Displays a table of all hobbies
+    ============================== -->
+    <section class="table-section" aria-label="All Hobbies Table">
+      <div class="container">
+        <div class="section-header">
+          <h2 class="section-title">All Hobbies</h2>
+          <a href="/add" class="btn btn-primary">+ Add Hobby</a>
+        </div>
+
+        <!-- Responsive table wrapper -->
+        <div class="table-wrapper">
+          <table class="hobbies-table">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Hobby</th>
+                <th>Category</th>
+                <th>Difficulty</th>
+                <th>Time Required</th>
+                <th>Featured</th>
+              </tr>
+            </thead>
+            <tbody>
+              <!--
+                EJS Loop: Render one table row per hobby
+                We also use the loop index (i) for the row number
+              -->
+              <% hobbies.forEach(function(hobby, i) { %>
+                <tr>
+                  <td><%= i + 1 %></td>
+                  <td class="hobby-name"><strong><%= hobby.title %></strong></td>
+                  <td>
+                    <span class="category-tag"><%= hobby.category %></span>
+                  </td>
+                  <td>
+                    <span class="difficulty-badge difficulty-<%= hobby.difficulty.toLowerCase() %>">
+                      <%= hobby.difficulty %>
+                    </span>
+                  </td>
+                  <td><%= hobby.time_required || '—' %></td>
+                  <td>
+                    <!-- EJS conditional to show Yes/No for featured -->
+                    <% if (hobby.featured) { %>
+                      <span class="badge badge-yes">✅ Yes</span>
+                    <% } else { %>
+                      <span class="badge badge-no">No</span>
+                    <% } %>
+                  </td>
+                </tr>
+              <% }); %>
+            </tbody>
+          </table>
+        </div>
+
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ==============================
+       FOOTER
+  ============================== -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-brand">
+          <h3>🎯 Hobby Hub</h3>
+          <p>Connecting people with their passions since 2024.</p>
+        </div>
+        <nav class="footer-nav" aria-label="Footer Navigation">
+          <h4>Quick Links</h4>
+          <ul>
+            <li><a href="/">Home</a></li>
+            <li><a href="/explore">Explore Hobbies</a></li>
+            <li><a href="/add">Add Hobby</a></li>
+            <li><a href="/dashboard">Dashboard</a></li>
+            <li><a href="/about">About / Contact</a></li>
+          </ul>
+        </nav>
+        <div class="footer-contact">
+          <h4>Contact</h4>
+          <p>Email: shivam.agrawal2024@vitstudent.ac.in</p>
+          <p>Phone: +91 8948203320</p>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2024 Hobby Hub. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="/script.js"></script>
+</body>
+</html>

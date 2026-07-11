@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- ==============================
+       META & HEAD SECTION
+  ============================== -->
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title><%= title %></title>
+  <link rel="stylesheet" href="/style.css" />
+</head>
+
+<body>
+
+  <!-- ==============================
+       HEADER & NAVIGATION
+  ============================== -->
+  <%- include('partials/navbar', { active: 'about' }) %>
+
+  <!-- ==============================
+       MAIN CONTENT
+  ============================== -->
+  <main>
+
+    <!-- Page Hero / Banner -->
+    <section class="page-hero" aria-label="Page Header">
+      <div class="container">
+        <h1>About Hobby Hub</h1>
+        <p>Learn more about our mission to connect people with their passions.</p>
+      </div>
+    </section>
+
+    <% if (locals.success) { %>
+      <div style="max-width:900px;margin:16px auto;padding:12px 24px;background:rgba(16,185,129,0.18);border:1px solid #10b981;border-radius:8px;color:#6ee7b7;font-weight:600;text-align:center;">
+        ✅ <%= success %>
+      </div>
+    <% } %>
+
+    <!-- ==============================
+         ABOUT SECTION
+         Mission and story of Hobby Hub
+    ============================== -->
+    <section class="about-section" aria-label="About Us">
+      <div class="container">
+        <div class="about-content">
+          <!-- About text -->
+          <div class="about-text">
+            <h2>Our Mission</h2>
+            <p>
+              Hobby Hub was created with one simple goal: to help people discover, explore, and share hobbies
+              that bring joy, relaxation, and meaning to their lives. We believe everyone has a passion waiting
+              to be discovered.
+            </p>
+            <p>
+              Whether you are looking for a creative outlet, a way to stay active, or simply something fun to
+              do on weekends — Hobby Hub has something for you. Our growing collection of hobbies covers
+              everything from arts and crafts to outdoor adventures.
+            </p>
+            <p>
+              Founded in 2024, Hobby Hub has become a welcoming community where beginners and experts alike
+              share their experiences and inspire each other to try something new.
+            </p>
+          </div>
+
+          <!-- About stats/highlights -->
+          <div class="about-highlights">
+            <div class="highlight-card">
+              <span class="highlight-number">9+</span>
+              <span class="highlight-label">Hobbies Listed</span>
+            </div>
+            <div class="highlight-card">
+              <span class="highlight-number">5+</span>
+              <span class="highlight-label">Categories</span>
+            </div>
+            <div class="highlight-card">
+              <span class="highlight-number">1K+</span>
+              <span class="highlight-label">Community Members</span>
+            </div>
+            <div class="highlight-card">
+              <span class="highlight-number">100%</span>
+              <span class="highlight-label">Free to Use</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==============================
+         TEAM SECTION
+         Meet the team cards
+    ============================== -->
+    <section class="team-section" aria-label="Our Team">
+      <div class="container">
+        <div class="section-header">
+          <h2 class="section-title">Meet the Team</h2>
+          <p class="section-subtitle">The people behind Hobby Hub</p>
+        </div>
+
+        <div class="team-grid">
+          <!--
+            EJS Loop: Render one card per team member
+            teamMembers array is passed from routes/about.js
+          -->
+          <% teamMembers.forEach(function(member) { %>
+            <article class="team-card">
+              <!-- Avatar placeholder using initials -->
+              <div class="team-avatar">
+                <%= member.name.split(' ').map(n => n[0]).join('') %>
+              </div>
+              <h3 class="team-name"><%= member.name %></h3>
+              <p class="team-role"><%= member.role %></p>
+              <p class="team-bio"><%= member.bio %></p>
+            </article>
+          <% }); %>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==============================
+         CONTACT SECTION
+         Contact form for reaching out
+    ============================== -->
+    <section class="contact-section" aria-label="Contact Us">
+      <div class="container">
+        <div class="section-header">
+          <h2 class="section-title">Get In Touch</h2>
+          <p class="section-subtitle">Have a question or suggestion? We'd love to hear from you!</p>
+        </div>
+
+        <div class="contact-wrapper">
+
+          <!-- Contact Information -->
+          <div class="contact-info">
+            <div class="contact-item">
+              <span class="contact-icon">📧</span>
+              <div>
+                <strong>Email</strong>
+                <p>shivam.agrawal2024@vitstudent.ac.in</p>
+              </div>
+            </div>
+            <div class="contact-item">
+              <span class="contact-icon">📞</span>
+              <div>
+                <strong>Phone</strong>
+                <p>+91 8948203320</p>
+              </div>
+            </div>
+            <div class="contact-item">
+              <span class="contact-icon">📍</span>
+              <div>
+                <strong>Location</strong>
+                <p>Lucknow, UP, India</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Contact Form -->
+          <form action="/about/contact" method="POST" class="contact-form">
+            <div class="form-group">
+              <label for="contact-name" class="form-label">Your Name</label>
+              <input type="text" id="contact-name" name="name" class="form-input" placeholder="John Doe" />
+            </div>
+
+            <div class="form-group">
+              <label for="contact-email" class="form-label">Email Address</label>
+              <input type="email" id="contact-email" name="email" class="form-input" placeholder="john@example.com" />
+            </div>
+
+            <div class="form-group">
+              <label for="contact-message" class="form-label">Message</label>
+              <textarea
+                id="contact-message"
+                name="message"
+                class="form-input form-textarea"
+                rows="5"
+                placeholder="Write your message here..."
+              ></textarea>
+            </div>
+
+            <button type="submit" class="btn btn-primary btn-large">Send Message</button>
+          </form>
+
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ==============================
+       FOOTER
+  ============================== -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-brand">
+          <h3>🎯 Hobby Hub</h3>
+          <p>Connecting people with their passions since 2024.</p>
+        </div>
+        <nav class="footer-nav" aria-label="Footer Navigation">
+          <h4>Quick Links</h4>
+          <ul>
+            <li><a href="/">Home</a></li>
+            <li><a href="/explore">Explore Hobbies</a></li>
+            <li><a href="/add">Add Hobby</a></li>
+            <li><a href="/dashboard">Dashboard</a></li>
+            <li><a href="/about">About / Contact</a></li>
+          </ul>
+        </nav>
+        <div class="footer-contact">
+          <h4>Contact</h4>
+          <p>Email: shivam.agrawal2024@vitstudent.ac.in</p>
+          <p>Phone: +91 8948203320</p>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2024 Hobby Hub. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="/script.js"></script>
+</body>
+</html>

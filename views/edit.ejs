@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title><%= title %></title>
+  <link rel="stylesheet" href="/style.css" />
+</head>
+<body>
+
+  <header class="site-header">
+    <div class="container">
+      <div class="logo"><a href="/">🎯 Hobby Hub</a></div>
+      <nav class="main-nav" aria-label="Main Navigation">
+        <ul class="nav-list">
+          <li><a href="/home"      class="nav-link">Home</a></li>
+          <li><a href="/explore"   class="nav-link active">Explore</a></li>
+          <li><a href="/add"       class="nav-link">Add Hobby</a></li>
+          <li><a href="/community" class="nav-link">Community</a></li>
+          <li><a href="/dashboard" class="nav-link">Dashboard</a></li>
+          <li><a href="/about"     class="nav-link">About</a></li>
+          <li><a href="/"          class="nav-link">Logout</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+
+    <section class="page-hero">
+      <div class="container">
+        <h1>Edit Hobby</h1>
+        <p>Update the details for "<%= hobby.title %>"</p>
+      </div>
+    </section>
+
+    <section class="form-section">
+      <div class="container">
+        <div class="form-wrapper">
+          <!-- Edit form — sends POST to /edit/:id -->
+          <form action="/edit/<%= hobby.id || hobby._id %>" method="POST" class="hobby-form">
+
+            <div class="form-group">
+              <label for="title" class="form-label">Hobby Title <span class="required">*</span></label>
+              <input type="text" id="title" name="title" class="form-input"
+                     value="<%= hobby.title %>" required />
+            </div>
+
+            <div class="form-group">
+              <label for="description" class="form-label">Description <span class="required">*</span></label>
+              <textarea id="description" name="description" class="form-input form-textarea"
+                        rows="4" required><%= hobby.description %></textarea>
+            </div>
+
+            <div class="form-group">
+              <label for="category" class="form-label">Category <span class="required">*</span></label>
+              <select id="category" name="category" class="form-input form-select" required>
+                <% ['Arts & Crafts','Music','Sports','Outdoor','Food & Drink',
+                    'Health & Fitness','Education','Games','Technology','Other'].forEach(function(cat) { %>
+                  <option value="<%= cat %>" <%= hobby.category === cat ? 'selected' : '' %>><%= cat %></option>
+                <% }); %>
+              </select>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label for="difficulty" class="form-label">Difficulty</label>
+                <select id="difficulty" name="difficulty" class="form-input form-select">
+                  <% ['Beginner','Intermediate','Advanced'].forEach(function(d) { %>
+                    <option value="<%= d %>" <%= hobby.difficulty === d ? 'selected' : '' %>><%= d %></option>
+                  <% }); %>
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="timeRequired" class="form-label">Time Required</label>
+                <input type="text" id="timeRequired" name="timeRequired" class="form-input"
+                       value="<%= hobby.timeRequired %>" placeholder="e.g. 2-3 hours/week" />
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="image" class="form-label">Image URL <span class="optional">(Optional)</span></label>
+              <input type="url" id="image" name="image" class="form-input"
+                     value="<%= hobby.image %>" placeholder="https://example.com/image.jpg" />
+            </div>
+
+            <div class="form-actions">
+              <button type="submit" class="btn btn-primary btn-large">💾 Save Changes</button>
+              <a href="/explore" class="btn btn-secondary">Cancel</a>
+            </div>
+
+          </form>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-bottom" style="padding:20px 0;text-align:center;opacity:0.6;font-size:0.85rem;">
+        &copy; 2024 Hobby Hub. All rights reserved.
+      </div>
+    </div>
+  </footer>
+
+  <script src="/script.js"></script>
+</body>
+</html>

@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title><%= title %></title>
+  <link rel="stylesheet" href="/style.css" />
+</head>
+<body>
+
+  <%- include('partials/navbar', { active: 'explore' }) %>
+
+  <main>
+    <section class="page-hero" aria-label="Page Header">
+      <div class="container">
+        <h1>Explore Hobbies</h1>
+        <p>Browse our full collection of hobbies. Use the category filters to narrow down your search.</p>
+      </div>
+    </section>
+
+    <section class="filter-section" aria-label="Category Filters">
+      <div class="container">
+        <div class="filter-buttons">
+          <a href="/explore" class="filter-btn <%= selectedCategory === 'all' ? 'active' : '' %>">All</a>
+          <% categories.forEach(function(category) { %>
+            <a href="/explore?category=<%= encodeURIComponent(category) %>"
+               class="filter-btn <%= selectedCategory === category ? 'active' : '' %>">
+              <%= category %>
+            </a>
+          <% }); %>
+        </div>
+      </div>
+    </section>
+
+    <section class="hobbies-section" aria-label="Hobbies List">
+      <div class="container">
+        <p class="results-count">
+          Showing <strong><%= hobbies.length %></strong>
+          <%= selectedCategory !== 'all' ? 'hobbies in ' + selectedCategory : 'hobbies' %>
+        </p>
+
+        <% if (hobbies.length === 0) { %>
+          <div class="empty-state">
+            <p>No hobbies found in this category.</p>
+            <a href="/explore" class="btn btn-primary">View All Hobbies</a>
+          </div>
+        <% } else { %>
+          <div class="hobbies-grid">
+            <% hobbies.forEach(function(hobby) {
+                const isOwner = user && hobby.addedByEmail && user.email === hobby.addedByEmail;
+                const canDelete = user && (user.isAdmin || isOwner);
+            %>
+              <article class="hobby-card">
+                <div class="card-image">
+                  <img src="<%= hobby.image %>" alt="<%= hobby.title %>" loading="lazy" />
+                  <span class="category-badge"><%= hobby.category %></span>
+                </div>
+                <div class="card-body">
+                  <h3 class="card-title"><%= hobby.title %></h3>
+                  <p class="card-description"><%= hobby.description %></p>
+                  <div class="card-meta">
+                    <span class="meta-item"><strong>Difficulty:</strong> <%= hobby.difficulty %></span>
+                    <span class="meta-item"><strong>Time:</strong> <%= hobby.timeRequired %></span>
+                  </div>
+                  <% if (hobby.addedByUsername) { %>
+                    <p style="font-size:0.75rem;color:#a5b4fc;margin-top:6px;">Added by <%= hobby.addedByUsername %></p>
+                  <% } %>
+                </div>
+                <div class="card-footer">
+                  <span class="difficulty-badge difficulty-<%= hobby.difficulty ? hobby.difficulty.toLowerCase() : 'beginner' %>">
+                    <%= hobby.difficulty %>
+                  </span>
+                  <div style="display:flex;gap:8px;align-items:center;">
+                    <a href="/edit/<%= hobby.id %>" class="btn btn-outline" style="font-size:0.8rem;padding:4px 12px;">
+                      ✏️ Edit
+                    </a>
+                    <% if (canDelete) { %>
+                      <form action="/explore/delete/<%= hobby.id %>" method="POST" style="margin:0;"
+                            onsubmit="return confirm('Delete this hobby?')">
+                        <button type="submit" style="background:rgba(239,68,68,0.15);border:1px solid #ef4444;color:#fca5a5;border-radius:6px;padding:4px 10px;font-size:0.78rem;cursor:pointer;">
+                          🗑 Delete
+                        </button>
+                      </form>
+                    <% } %>
+                  </div>
+                </div>
+              </article>
+            <% }); %>
+          </div>
+        <% } %>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-brand">
+          <h3>🎯 Hobby Hub</h3>
+          <p>Connecting people with their passions since 2024.</p>
+        </div>
+        <nav class="footer-nav" aria-label="Footer Navigation">
+          <h4>Quick Links</h4>
+          <ul>
+            <li><a href="/home">Home</a></li>
+            <li><a href="/explore">Explore Hobbies</a></li>
+            <li><a href="/add">Add Hobby</a></li>
+            <li><a href="/dashboard">Dashboard</a></li>
+            <li><a href="/about">About / Contact</a></li>
+          </ul>
+        </nav>
+        <div class="footer-contact">
+          <h4>Contact</h4>
+          <p>Email: shivam.agrawal2024@vitstudent.ac.in</p>
+          <p>Phone: +91 8948203320</p>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2025 Hobby Hub. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="/script.js"></script>
+</body>
+</html>

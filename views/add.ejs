@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- ==============================
+       META & HEAD SECTION
+  ============================== -->
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title><%= title %></title>
+  <link rel="stylesheet" href="/style.css" />
+</head>
+
+<body>
+
+  <!-- ==============================
+       HEADER & NAVIGATION
+  ============================== -->
+  <%- include('partials/navbar', { active: 'add' }) %>
+
+  <!-- ==============================
+       MAIN CONTENT
+  ============================== -->
+  <main>
+
+    <!-- Page Hero / Banner -->
+    <section class="page-hero" aria-label="Page Header">
+      <div class="container">
+        <h1>Add a New Hobby</h1>
+        <p>Share a hobby with the community! Fill in the details below to add it to our collection.</p>
+      </div>
+    </section>
+
+    <!-- ==============================
+         FORM SECTION
+         The form to add a new hobby
+    ============================== -->
+    <section class="form-section" aria-label="Add Hobby Form">
+      <div class="container">
+        <div class="form-wrapper">
+
+          <!--
+            EJS Conditional: Show success message if hobby was added
+            The "success" variable is passed from routes/add.js
+          -->
+          <% if (success) { %>
+            <div class="alert alert-success" role="alert">
+              ✅ <%= success %>
+              <a href="/explore">View all hobbies &rarr;</a>
+            </div>
+          <% } %>
+
+          <!--
+            EJS Conditional: Show error message if validation failed
+            The "error" variable is passed from routes/add.js
+          -->
+          <% if (error) { %>
+            <div class="alert alert-error" role="alert">
+              ❌ <%= error %>
+            </div>
+          <% } %>
+
+          <!-- ==============================
+               HTML FORM
+               method="POST" sends data to the server
+               action="/add" tells the browser where to send it
+          ============================== -->
+          <form action="/add" method="POST" class="hobby-form" novalidate>
+
+            <!-- Form Group: Hobby Title (Required) -->
+            <div class="form-group">
+              <label for="title" class="form-label">
+                Hobby Title <span class="required">*</span>
+              </label>
+              <input
+                type="text"
+                id="title"
+                name="title"
+                class="form-input"
+                placeholder="e.g. Watercolor Painting"
+                required
+              />
+              <small class="form-hint">Give your hobby a short, clear name.</small>
+            </div>
+
+            <!-- Form Group: Description (Required) -->
+            <div class="form-group">
+              <label for="description" class="form-label">
+                Description <span class="required">*</span>
+              </label>
+              <textarea
+                id="description"
+                name="description"
+                class="form-input form-textarea"
+                placeholder="Describe what this hobby involves, why it's fun, and who it's for..."
+                rows="4"
+                required
+              ></textarea>
+              <small class="form-hint">Minimum 20 characters. Help others understand this hobby.</small>
+            </div>
+
+            <!-- Form Group: Category (Required) -->
+            <div class="form-group">
+              <label for="category" class="form-label">
+                Category <span class="required">*</span>
+              </label>
+              <select id="category" name="category" class="form-input form-select" required>
+                <option value="">-- Select a Category --</option>
+                <option value="Arts & Crafts">Arts & Crafts</option>
+                <option value="Music">Music</option>
+                <option value="Sports">Sports</option>
+                <option value="Outdoor">Outdoor</option>
+                <option value="Food & Drink">Food & Drink</option>
+                <option value="Health & Fitness">Health & Fitness</option>
+                <option value="Education">Education</option>
+                <option value="Games">Games</option>
+                <option value="Technology">Technology</option>
+                <option value="Other">Other</option>
+              </select>
+            </div>
+
+            <!-- Two columns: Difficulty & Time Required -->
+            <div class="form-row">
+              <!-- Form Group: Difficulty Level -->
+              <div class="form-group">
+                <label for="difficulty" class="form-label">Difficulty Level</label>
+                <select id="difficulty" name="difficulty" class="form-input form-select">
+                  <option value="Beginner">Beginner</option>
+                  <option value="Intermediate">Intermediate</option>
+                  <option value="Advanced">Advanced</option>
+                </select>
+              </div>
+
+              <!-- Form Group: Time Required -->
+              <div class="form-group">
+                <label for="timeRequired" class="form-label">Time Required</label>
+                <input
+                  type="text"
+                  id="timeRequired"
+                  name="timeRequired"
+                  class="form-input"
+                  placeholder="e.g. 2-3 hours/week"
+                />
+              </div>
+            </div>
+
+            <!-- Form Group: Image URL (Optional) -->
+            <div class="form-group">
+              <label for="image" class="form-label">Image URL <span class="optional">(Optional)</span></label>
+              <input
+                type="url"
+                id="image"
+                name="image"
+                class="form-input"
+                placeholder="https://example.com/image.jpg"
+              />
+              <small class="form-hint">Leave blank to use a default image.</small>
+            </div>
+
+            <!-- Form Submit Button -->
+            <div class="form-actions">
+              <button type="submit" class="btn btn-primary btn-large">
+                ➕ Add Hobby
+              </button>
+              <a href="/explore" class="btn btn-secondary">Cancel</a>
+            </div>
+
+          </form>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ==============================
+       FOOTER
+  ============================== -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-brand">
+          <h3>🎯 Hobby Hub</h3>
+          <p>Connecting people with their passions since 2024.</p>
+        </div>
+        <nav class="footer-nav" aria-label="Footer Navigation">
+          <h4>Quick Links</h4>
+          <ul>
+            <li><a href="/">Home</a></li>
+            <li><a href="/explore">Explore Hobbies</a></li>
+            <li><a href="/add">Add Hobby</a></li>
+            <li><a href="/dashboard">Dashboard</a></li>
+            <li><a href="/about">About / Contact</a></li>
+          </ul>
+        </nav>
+        <div class="footer-contact">
+          <h4>Contact</h4>
+          <p>Email: shivam.agrawal2024@vitstudent.ac.in</p>
+          <p>Phone: +91 8948203320</p>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2024 Hobby Hub. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="/script.js"></script>
+</body>
+</html>

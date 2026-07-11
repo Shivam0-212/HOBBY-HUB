@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title><%= title %></title>
+  <link rel="stylesheet" href="/style.css" />
+  <style>
+    .comm-card {
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 14px;
+      padding: 22px 24px;
+      margin-bottom: 18px;
+      backdrop-filter: blur(8px);
+    }
+    .comm-card h3 { color: #e2e8f0; font-size: 1.05rem; margin-bottom: 6px; }
+    .comm-card p  { color: #94a3b8; font-size: 0.9rem; margin-bottom: 4px; }
+    .comm-card small { color: #64748b; font-size: 0.8rem; }
+    .comm-form {
+      background: rgba(255,255,255,0.07);
+      border: 1px solid rgba(255,255,255,0.13);
+      border-radius: 14px;
+      padding: 26px 28px;
+      margin-bottom: 32px;
+      backdrop-filter: blur(10px);
+    }
+    .comm-form h3 { color: #c4b5fd; margin-bottom: 18px; font-size: 1.1rem; }
+    .suggest-form {
+      background: rgba(245,158,11,0.07);
+      border: 1px solid rgba(245,158,11,0.25);
+      border-radius: 14px;
+      padding: 26px 28px;
+      margin-bottom: 28px;
+      backdrop-filter: blur(10px);
+    }
+    .suggest-form h3 { color: #fcd34d; margin-bottom: 6px; font-size: 1.1rem; }
+    .suggest-form .suggest-note {
+      color: #94a3b8; font-size: 0.85rem; margin-bottom: 18px;
+      background: rgba(245,158,11,0.08);
+      border-left: 3px solid rgba(245,158,11,0.4);
+      padding: 8px 12px; border-radius: 0 6px 6px 0;
+    }
+    .comm-section { padding: 48px 0; }
+    .event-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px; }
+    .event-card {
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 16px;
+      padding: 22px;
+      backdrop-filter: blur(8px);
+      transition: transform 0.2s, border-color 0.2s;
+    }
+    .event-card:hover { transform: translateY(-3px); border-color: rgba(139,92,246,0.35); }
+    .event-card h3 { color: #e2e8f0; font-size: 1rem; margin-bottom: 10px; }
+    .event-card p  { color: #94a3b8; font-size: 0.85rem; margin-bottom: 4px; }
+    .gender-badge {
+      display: inline-block;
+      font-size: 0.75rem;
+      padding: 3px 12px;
+      border-radius: 20px;
+      margin-bottom: 12px;
+      font-weight: 600;
+    }
+    .badge-all    { background: rgba(99,102,241,0.25); color: #a5b4fc; border: 1px solid #6366f1; }
+    .badge-female { background: rgba(236,72,153,0.2);  color: #f9a8d4; border: 1px solid #ec4899; }
+    .badge-male   { background: rgba(59,130,246,0.2);  color: #93c5fd; border: 1px solid #3b82f6; }
+    .banner { padding: 12px 24px; text-align: center; font-weight: 600; border-radius: 8px; margin: 0 0 12px; }
+    .banner-ok  { background: rgba(16,185,129,0.2); color: #6ee7b7; border: 1px solid #10b981; }
+    .banner-err { background: rgba(239,68,68,0.2);  color: #fca5a5; border: 1px solid #ef4444; }
+    .banner-info { background: rgba(245,158,11,0.15); color: #fcd34d; border: 1px solid rgba(245,158,11,0.4); }
+    .form-select { appearance: none; cursor: pointer; }
+    .joined-label { color: #6ee7b7; font-size: 0.82rem; font-weight: 600; }
+    .own-del-btn {
+      background: rgba(239,68,68,0.15);
+      border: 1px solid #ef4444;
+      color: #fca5a5;
+      border-radius: 6px;
+      padding: 3px 10px;
+      font-size: 0.78rem;
+      cursor: pointer;
+    }
+    .own-del-btn:hover { background: rgba(239,68,68,0.35); }
+
+    /* Suggestion status cards */
+    .suggestion-list { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 14px; margin-top: 20px; }
+    .sug-card {
+      border-radius: 12px; padding: 16px 18px;
+      font-size: 0.85rem;
+    }
+    .sug-pending  { background: rgba(245,158,11,0.08);  border: 1px solid rgba(245,158,11,0.3); }
+    .sug-approved { background: rgba(16,185,129,0.08);  border: 1px solid rgba(16,185,129,0.3); }
+    .sug-rejected { background: rgba(239,68,68,0.08);   border: 1px solid rgba(239,68,68,0.3); }
+    .sug-card .sug-title { color: #e2e8f0; font-weight: 600; margin-bottom: 4px; }
+    .sug-card .sug-meta  { color: #64748b; font-size: 0.78rem; }
+    .status-pill {
+      display: inline-block; padding: 2px 10px; border-radius: 20px;
+      font-size: 0.72rem; font-weight: 600; margin-bottom: 8px;
+    }
+    .status-pending  { background: rgba(245,158,11,0.2); color: #fcd34d; }
+    .status-approved { background: rgba(16,185,129,0.2); color: #6ee7b7; }
+    .status-rejected { background: rgba(239,68,68,0.2);  color: #fca5a5; }
+    .no-events-msg {
+      text-align: center; padding: 48px 24px; color: #64748b;
+    }
+    .no-events-msg .no-ev-icon { font-size: 3rem; margin-bottom: 12px; }
+    .no-events-msg p { font-size: 0.95rem; }
+  </style>
+</head>
+<body>
+
+  <%- include('partials/navbar', { active: 'community' }) %>
+
+  <main>
+    <section class="page-hero">
+      <div class="container">
+        <h1>Community</h1>
+        <p>Share posts and suggest events with fellow hobby enthusiasts.</p>
+      </div>
+    </section>
+
+    <% if (success === 'post') { %>
+      <div class="banner banner-ok">✅ Post added successfully!</div>
+    <% } else if (success === 'event') { %>
+      <div class="banner banner-ok">✅ Event created successfully!</div>
+    <% } else if (success === 'suggested') { %>
+      <div class="banner banner-info">💡 Your event suggestion has been sent to the admin for review!</div>
+    <% } else if (success === 'joined') { %>
+      <div class="banner banner-ok">✅ You joined the event!</div>
+    <% } %>
+    <% if (error === 'already_joined') { %>
+      <div class="banner banner-err">⚠️ You have already joined this event.</div>
+    <% } else if (error === 'gender_restricted') { %>
+      <div class="banner banner-err">🔒 Sorry, this event is restricted to a specific gender group and you are not eligible to join.</div>
+    <% } %>
+
+    <!-- POSTS SECTION -->
+    <section class="comm-section">
+      <div class="container">
+        <h2 class="section-title" style="margin-bottom:24px;">📝 Community Posts</h2>
+
+        <% if (user) { %>
+        <form action="/community/post" method="POST" class="comm-form">
+          <h3>Share a Post</h3>
+          <div class="form-group">
+            <label class="form-label">Post Title</label>
+            <input type="text" name="postTitle" class="form-input" placeholder="e.g. My experience with photography" required />
+          </div>
+          <div class="form-group">
+            <label class="form-label">What's on your mind?</label>
+            <textarea name="postBody" class="form-input form-textarea" rows="3"
+                      placeholder="Share tips, stories or questions..." required></textarea>
+          </div>
+          <button type="submit" class="btn btn-primary">Post</button>
+        </form>
+        <% } else { %>
+          <p style="color:#94a3b8;margin-bottom:24px;">
+            <a href="/login" style="color:#a78bfa;">Login</a> to share a post.
+          </p>
+        <% } %>
+
+        <% if (posts.length === 0) { %>
+          <p style="color:#64748b;">No posts yet. Be the first to post!</p>
+        <% } else { %>
+          <% posts.forEach(function(post) { %>
+            <div class="comm-card">
+              <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:10px;">
+                <div>
+                  <h3><%= post.title %></h3>
+                  <p><%= post.body %></p>
+                  <small>By <strong><%= post.author_username %></strong> &nbsp;·&nbsp;
+                    <%= new Date(post.created_at).toLocaleDateString('en-IN') %></small>
+                </div>
+                <% if (user && (user.isAdmin || user.email === post.author_email)) { %>
+                  <form action="/community/delete/post/<%= post.id %>" method="POST" style="margin:0;" onsubmit="return confirm('Delete this post?')">
+                    <button type="submit" class="own-del-btn">🗑 Delete</button>
+                  </form>
+                <% } %>
+              </div>
+            </div>
+          <% }); %>
+        <% } %>
+      </div>
+    </section>
+
+    <!-- EVENTS SECTION -->
+    <section class="comm-section" style="border-top:1px solid rgba(255,255,255,0.07);">
+      <div class="container">
+        <h2 class="section-title" style="margin-bottom:8px;">📅 Hobby Events</h2>
+        <p style="color:#64748b;font-size:0.88rem;margin-bottom:28px;">
+          Events are created by the admin. Suggest an idea below and the admin will review it!
+        </p>
+
+        <% if (user && !user.isAdmin) { %>
+        <!-- SUGGEST AN EVENT (for regular users) -->
+        <div class="suggest-form">
+          <h3>💡 Suggest an Event</h3>
+          <div class="suggest-note">
+            Your suggestion will be reviewed by the admin. If approved, the event will appear here and everyone can join!
+          </div>
+          <form action="/community/suggest" method="POST">
+            <div class="form-row">
+              <div class="form-group">
+                <label class="form-label">Event Name *</label>
+                <input type="text" name="eventName" class="form-input" placeholder="e.g. Photography Walk in Park" required />
+              </div>
+              <div class="form-group">
+                <label class="form-label">Preferred Date *</label>
+                <input type="date" name="eventDate" id="suggestDate" class="form-input" required />
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label class="form-label">Related Hobby</label>
+                <input type="text" name="eventHobby" class="form-input" placeholder="e.g. Photography" />
+              </div>
+              <div class="form-group">
+                <label class="form-label">Who should join?</label>
+                <select name="genderRestriction" class="form-input form-select">
+                  <option value="all">Everyone (All Genders)</option>
+                  <option value="female">Women Only 👩</option>
+                  <option value="male">Men Only 👨</option>
+                </select>
+              </div>
+            </div>
+            <button type="submit" class="btn" style="background:linear-gradient(135deg,#d97706,#f59e0b);color:#fff;border:none;padding:10px 24px;border-radius:8px;font-weight:600;cursor:pointer;">
+              💡 Submit Suggestion
+            </button>
+          </form>
+        </div>
+
+        <% if (mySuggestions && mySuggestions.length > 0) { %>
+        <div style="margin-bottom:32px;">
+          <h3 style="color:#94a3b8;font-size:0.95rem;margin-bottom:14px;text-transform:uppercase;letter-spacing:1px;">📋 My Suggestions</h3>
+          <div class="suggestion-list">
+            <% mySuggestions.forEach(function(s) { %>
+              <div class="sug-card sug-<%= s.status %>">
+                <span class="status-pill status-<%= s.status %>">
+                  <%= s.status === 'pending' ? '⏳ Pending Review' : s.status === 'approved' ? '✅ Approved' : '❌ Rejected' %>
+                </span>
+                <div class="sug-title"><%= s.name %></div>
+                <div class="sug-meta">📅 <%= s.date %> · 🎯 <%= s.hobby %></div>
+                <% if (s.admin_note) { %>
+                  <div style="margin-top:8px;font-size:0.78rem;color:#94a3b8;font-style:italic;">Admin: "<%= s.admin_note %>"</div>
+                <% } %>
+              </div>
+            <% }); %>
+          </div>
+        </div>
+        <% } %>
+
+        <% } else if (user && user.isAdmin) { %>
+        <!-- ADMIN: direct event creation form -->
+        <form action="/community/event" method="POST" class="comm-form" style="border-color:rgba(139,92,246,0.3);">
+          <h3>⚙️ Create an Event (Admin)</h3>
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">Event Name</label>
+              <input type="text" name="eventName" class="form-input" placeholder="e.g. Yoga for Women" required />
+            </div>
+            <div class="form-group">
+              <label class="form-label">Date</label>
+              <input type="date" name="eventDate" id="adminDate" class="form-input" required />
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">Related Hobby</label>
+              <input type="text" name="eventHobby" class="form-input" placeholder="e.g. Yoga" />
+            </div>
+            <div class="form-group">
+              <label class="form-label">Who can join?</label>
+              <select name="genderRestriction" class="form-input form-select">
+                <option value="all">Everyone (All Genders)</option>
+                <option value="female">Women Only 👩</option>
+                <option value="male">Men Only 👨</option>
+              </select>
+            </div>
+          </div>
+          <button type="submit" class="btn btn-primary">Create Event</button>
+        </form>
+        <% } else { %>
+          <p style="color:#94a3b8;margin-bottom:24px;">
+            <a href="/login" style="color:#a78bfa;">Login</a> to suggest an event.
+          </p>
+        <% } %>
+
+        <!-- APPROVED EVENTS LIST -->
+        <h3 style="color:#c4b5fd;font-size:1rem;margin-bottom:18px;text-transform:uppercase;letter-spacing:1px;">🎉 Upcoming Events</h3>
+        <% if (events.length === 0) { %>
+          <div class="no-events-msg">
+            <div class="no-ev-icon">📅</div>
+            <p>No events yet.<br/>Be the first to suggest one above!</p>
+          </div>
+        <% } else { %>
+          <div class="event-grid">
+            <% events.forEach(function(ev) {
+                const alreadyJoined = user && ev.joined_by && ev.joined_by.includes(user.email);
+                const canDelete = user && (user.isAdmin || user.email === ev.created_by_email);
+            %>
+              <div class="event-card">
+                <h3><%= ev.name %></h3>
+
+                <%
+                  let badgeClass = 'badge-all', badgeText = '🌐 All Genders';
+                  if (ev.gender_restriction === 'female') { badgeClass = 'badge-female'; badgeText = '👩 Women Only'; }
+                  else if (ev.gender_restriction === 'male') { badgeClass = 'badge-male'; badgeText = '👨 Men Only'; }
+                %>
+                <span class="gender-badge <%= badgeClass %>"><%= badgeText %></span>
+
+                <p>📅 <%= ev.date %></p>
+                <p>🎯 <%= ev.hobby %></p>
+                <p style="color:#a5b4fc;font-size:0.83rem;margin-top:6px;">
+                  👥 <%= ev.joined_by ? ev.joined_by.length : 0 %> joined
+                </p>
+
+                <div style="display:flex;align-items:center;gap:12px;margin-top:14px;flex-wrap:wrap;">
+                  <% if (alreadyJoined) { %>
+                    <span class="joined-label">✅ You joined</span>
+                  <% } else if (user) { %>
+                    <form action="/community/join/<%= ev.id %>" method="POST" style="margin:0;">
+                      <button type="submit" class="btn btn-primary" style="padding:7px 18px;font-size:0.85rem;">
+                        Join Event
+                      </button>
+                    </form>
+                  <% } else { %>
+                    <a href="/login" class="btn btn-outline" style="font-size:0.82rem;padding:5px 14px;">Login to join</a>
+                  <% } %>
+
+                  <% if (canDelete) { %>
+                    <form action="/community/delete/event/<%= ev.id %>" method="POST" style="margin:0;" onsubmit="return confirm('Delete this event?')">
+                      <button type="submit" class="own-del-btn">🗑 Delete</button>
+                    </form>
+                  <% } %>
+                </div>
+              </div>
+            <% }); %>
+          </div>
+        <% } %>
+
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-brand">
+          <h3>🎯 Hobby Hub</h3>
+          <p>Connecting people with their passions since 2024.</p>
+        </div>
+        <nav class="footer-nav">
+          <h4>Quick Links</h4>
+          <ul>
+            <li><a href="/home">Home</a></li>
+            <li><a href="/explore">Explore Hobbies</a></li>
+            <li><a href="/add">Add Hobby</a></li>
+            <li><a href="/dashboard">Dashboard</a></li>
+            <li><a href="/about">About / Contact</a></li>
+          </ul>
+        </nav>
+        <div class="footer-contact">
+          <h4>Contact</h4>
+          <p>Email: shivam.agrawal2024@vitstudent.ac.in</p>
+          <p>Phone: +91 8948203320</p>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2025 Hobby Hub. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="/script.js"></script>
+  <script>
+    // Restrict date inputs to today and future only
+    const todayStr = new Date().toISOString().split('T')[0];
+    const suggestDate = document.getElementById('suggestDate');
+    const adminDate   = document.getElementById('adminDate');
+    if (suggestDate) { suggestDate.min = todayStr; }
+    if (adminDate)   { adminDate.min   = todayStr; }
+  </script>
+</body>
+</html>

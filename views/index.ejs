@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- ==============================
+       META & HEAD SECTION
+       Defines character encoding, viewport, title, and linked CSS
+  ============================== -->
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title><%= title %></title>
+  <link rel="stylesheet" href="/style.css" />
+</head>
+
+<body>
+
+  <!-- ==============================
+       HEADER & NAVIGATION
+       The <header> contains site logo and the main navbar.
+       Using semantic HTML5 elements for better structure.
+  ============================== -->
+  <%- include('partials/navbar', { active: 'home' }) %>
+
+  <!-- ==============================
+       MAIN CONTENT AREA
+       <main> wraps the primary content of the page
+  ============================== -->
+  <main>
+
+    <!-- ==============================
+         HERO SECTION
+         Large welcome banner at the top of the homepage
+    ============================== -->
+    <section class="hero" aria-label="Hero Banner">
+      <!-- Floating particles -->
+      <div class="hero-particles" aria-hidden="true">
+        <span></span><span></span><span></span><span></span><span></span>
+        <span></span><span></span><span></span><span></span><span></span>
+      </div>
+      <div class="hero-orb-left" aria-hidden="true"></div>
+
+      <div class="container hero-content">
+        <div class="hero-label">✦ Welcome to Hobby Hub</div>
+        <h1 class="hero-title">Discover Your Next<br /><span class="highlight">Passion & Hobby</span></h1>
+        <p class="hero-subtitle">
+          Discover new passions, explore creative activities, and connect with a community of hobby enthusiasts.
+          Whether you are a beginner or an expert, there is something here for everyone!
+        </p>
+        <!-- Call-to-action buttons -->
+        <div class="hero-buttons">
+          <a href="/explore" class="btn btn-primary">Explore Hobbies</a>
+          <a href="/add" class="btn btn-secondary">Share Your Hobby</a>
+        </div>
+
+        <!-- Quick stats shown in the hero area -->
+        <div class="hero-stats">
+          <div class="stat-item">
+            <span class="stat-number"><%= totalHobbies %>+</span>
+            <span class="stat-label">Hobbies</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-number">5+</span>
+            <span class="stat-label">Categories</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-number">1K+</span>
+            <span class="stat-label">Members</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==============================
+         FEATURED HOBBIES SECTION
+         Shows a selection of featured hobby cards
+    ============================== -->
+    <section class="featured-section" aria-label="Featured Hobbies">
+      <div class="container">
+        <!-- Section header -->
+        <div class="section-header">
+          <h2 class="section-title">Featured Hobbies</h2>
+          <p class="section-subtitle">Hand-picked hobbies to help you get started on your journey</p>
+        </div>
+
+        <!-- Hobby cards grid -->
+        <div class="hobbies-grid">
+          <!--
+            EJS Loop: Iterate over the featuredHobbies array
+            Each hobby is passed from routes/index.js
+          -->
+          <% featuredHobbies.forEach(function(hobby) { %>
+            <!-- Each hobby is an <article> - a self-contained piece of content -->
+            <article class="hobby-card">
+              <!-- Hobby image -->
+              <div class="card-image">
+                <img src="<%= hobby.image %>" alt="<%= hobby.title %>" loading="lazy" />
+                <!-- Category badge overlay -->
+                <span class="category-badge"><%= hobby.category %></span>
+              </div>
+
+              <!-- Hobby card body with text content -->
+              <div class="card-body">
+                <h3 class="card-title"><%= hobby.title %></h3>
+                <p class="card-description"><%= hobby.description %></p>
+
+                <!-- Hobby meta info (difficulty & time) -->
+                <div class="card-meta">
+                  <span class="meta-item">
+                    <strong>Difficulty:</strong> <%= hobby.difficulty %>
+                  </span>
+                  <span class="meta-item">
+                    <strong>Time:</strong> <%= hobby.time_required %>
+                  </span>
+                </div>
+              </div>
+
+              <!-- Card footer with action link -->
+              <div class="card-footer">
+                <a href="/explore?category=<%= encodeURIComponent(hobby.category) %>" class="btn btn-outline">
+                  See More in <%= hobby.category %>
+                </a>
+              </div>
+            </article>
+          <% }); %>
+        </div>
+
+        <!-- Link to view all hobbies -->
+        <div class="section-cta">
+          <a href="/explore" class="btn btn-primary">View All Hobbies</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==============================
+         WHY HOBBY HUB SECTION
+         Informational section about the benefits
+    ============================== -->
+    <section class="why-section" aria-label="Why Choose Hobby Hub">
+      <div class="container">
+        <div class="section-header">
+          <h2 class="section-title">Why Hobby Hub?</h2>
+          <p class="section-subtitle">Your one-stop destination for discovering and sharing hobbies</p>
+        </div>
+
+        <!-- Benefits grid -->
+        <div class="benefits-grid">
+          <div class="benefit-card">
+            <div class="benefit-icon">🔍</div>
+            <h3>Discover</h3>
+            <p>Browse hundreds of hobbies across different categories to find what excites you.</p>
+          </div>
+          <div class="benefit-card">
+            <div class="benefit-icon">📚</div>
+            <h3>Learn</h3>
+            <p>Get tips, resources and guidance to start or improve your hobby journey.</p>
+          </div>
+          <div class="benefit-card">
+            <div class="benefit-icon">🤝</div>
+            <h3>Connect</h3>
+            <p>Join a community of passionate people who share your interests and hobbies.</p>
+          </div>
+          <div class="benefit-card">
+            <div class="benefit-icon">✨</div>
+            <h3>Share</h3>
+            <p>Add your own hobby and inspire others to explore new activities and passions.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ==============================
+       FOOTER
+       Contains copyright and navigation links
+  ============================== -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-content">
+        <!-- Footer brand -->
+        <div class="footer-brand">
+          <h3>🎯 Hobby Hub</h3>
+          <p>Connecting people with their passions since 2024.</p>
+        </div>
+
+        <!-- Footer navigation links -->
+        <nav class="footer-nav" aria-label="Footer Navigation">
+          <h4>Quick Links</h4>
+          <ul>
+            <li><a href="/">Home</a></li>
+            <li><a href="/explore">Explore Hobbies</a></li>
+            <li><a href="/add">Add Hobby</a></li>
+            <li><a href="/dashboard">Dashboard</a></li>
+            <li><a href="/about">About / Contact</a></li>
+          </ul>
+        </nav>
+
+        <!-- Footer contact info -->
+        <div class="footer-contact">
+          <h4>Contact</h4>
+          <p>Email: shivam.agrawal2024@vitstudent.ac.in</p>
+          <p>Phone: +91 8948203320</p>
+        </div>
+      </div>
+
+      <!-- Footer bottom bar -->
+      <div class="footer-bottom">
+        <p>&copy; 2024 Hobby Hub. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Link external JavaScript file -->
+  <script src="/script.js"></script>
+
+</body>
+</html>

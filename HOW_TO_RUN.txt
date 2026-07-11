@@ -1,0 +1,47 @@
+=================================================
+  HOBBY HUB — Run on Your PC
+=================================================
+
+STEP 1: Install Node.js (if not installed)
+  Download from: https://nodejs.org
+  Choose the LTS version and install it.
+
+STEP 2: Open this folder in VS Code
+
+STEP 3: Open Terminal in VS Code (Ctrl + Backtick)
+
+STEP 4: Install packages — type and press Enter:
+  npm install
+
+STEP 5: Start the website — type and press Enter:
+  node server.js
+
+STEP 6: Open browser and go to:
+  http://localhost:3000
+
+=================================================
+  MONGODB SETUP (REQUIRED FIRST TIME)
+=================================================
+1. Go to: https://cloud.mongodb.com
+2. Left sidebar → SECURITY → Network Access
+3. Click + ADD IP ADDRESS
+4. Type: 0.0.0.0/0
+5. Click Confirm
+
+=================================================
+  ADMIN LOGIN
+=================================================
+  URL:      http://localhost:3000/admin
+  Email:    agrawalshivam3431@gmail.com
+  Password: Shivam1*;
+
+=================================================
+  TEST USER LOGINS
+=================================================
+  Username: aom       Password: 123321
+  Username: angel     Password: 999999
+  Username: shivam12  Password: 000000
+
+NOTE: Passwords are now stored encrypted in
+      MongoDB (bcrypt hashed) for security.
+=================================================

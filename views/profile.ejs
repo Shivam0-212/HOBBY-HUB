@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title><%= title %></title>
+  <link rel="stylesheet" href="/style.css" />
+</head>
+<body>
+
+  <%- include('partials/navbar', { active: 'profile' }) %>
+
+  <div class="page-hero">
+    <div class="container">
+      <h1>⚙️ My Profile</h1>
+      <p>Manage your account settings</p>
+    </div>
+  </div>
+
+  <main style="padding: 48px 0;">
+    <div class="container">
+
+      <% if (error) { %>
+        <div class="alert alert-error" style="max-width:640px;margin:0 auto 24px;">⚠️ <%= error %></div>
+      <% } %>
+      <% if (success) { %>
+        <div class="alert alert-success" style="max-width:640px;margin:0 auto 24px;">✅ <%= success %></div>
+      <% } %>
+
+      <div class="profile-page-grid">
+
+        <!-- Profile Card -->
+        <div class="profile-card-big">
+          <div class="profile-avatar-large"><%= user.username.charAt(0).toUpperCase() %></div>
+          <h2 class="profile-display-name"><%= user.name || user.username %></h2>
+          <p class="profile-username-tag">@<%= user.username %></p>
+          <p class="profile-email-tag"><%= user.email %></p>
+          <% if (user.gender) { %>
+            <span class="profile-gender-badge"><%= user.gender === 'male' ? '👨 Male' : user.gender === 'female' ? '👩 Female' : '⚧ Other' %></span>
+          <% } %>
+        </div>
+
+        <!-- Forms Column -->
+        <div class="profile-forms-col">
+
+          <!-- Update Name Form -->
+          <div class="profile-section-card">
+            <div class="profile-section-header">
+              <span class="profile-section-icon">✏️</span>
+              <h3>Update Display Name</h3>
+            </div>
+            <form action="/profile/name" method="POST" class="profile-form">
+              <div class="form-group">
+                <label class="form-label">Full Name</label>
+                <input
+                  type="text"
+                  name="name"
+                  class="form-input"
+                  placeholder="Enter your full name"
+                  value="<%= user.name || '' %>"
+                  maxlength="100"
+                  required
+                />
+                <span class="form-hint">This name will appear on your profile and posts.</span>
+              </div>
+              <button type="submit" class="btn btn-primary">Save Name</button>
+            </form>
+          </div>
+
+          <!-- Change Password Form -->
+          <div class="profile-section-card">
+            <div class="profile-section-header">
+              <span class="profile-section-icon">🔐</span>
+              <h3>Change Password</h3>
+            </div>
+            <form action="/profile/password" method="POST" class="profile-form">
+              <div class="form-group">
+                <label class="form-label">Old Password <span class="required">*</span></label>
+                <div class="password-input-wrapper">
+                  <input
+                    type="password"
+                    name="oldPassword"
+                    id="oldPassword"
+                    class="form-input"
+                    placeholder="Enter your current password"
+                    required
+                  />
+                  <button type="button" class="password-toggle-btn" onclick="togglePassword('oldPassword', this)" title="Show/Hide password">👁</button>
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="form-label">New Password <span class="required">*</span></label>
+                <div class="password-input-wrapper">
+                  <input
+                    type="password"
+                    name="newPassword"
+                    id="newPassword"
+                    class="form-input"
+                    placeholder="Enter your new password (min 6 chars)"
+                    minlength="6"
+                    required
+                  />
+                  <button type="button" class="password-toggle-btn" onclick="togglePassword('newPassword', this)" title="Show/Hide password">👁</button>
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Confirm New Password <span class="required">*</span></label>
+                <div class="password-input-wrapper">
+                  <input
+                    type="password"
+                    name="confirmPassword"
+                    id="confirmPassword"
+                    class="form-input"
+                    placeholder="Re-enter your new password"
+                    required
+                  />
+                  <button type="button" class="password-toggle-btn" onclick="togglePassword('confirmPassword', this)" title="Show/Hide password">👁</button>
+                </div>
+                <span class="form-hint" id="pwMatchHint" style="display:none;color:#f87171;">Passwords do not match.</span>
+              </div>
+              <button type="submit" class="btn btn-primary" id="changePwBtn">Change Password</button>
+            </form>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script src="/script.js"></script>
+  <script>
+    function togglePassword(id, btn) {
+      const input = document.getElementById(id);
+      if (input.type === 'password') {
+        input.type = 'text';
+        btn.textContent = '🙈';
+      } else {
+        input.type = 'password';
+        btn.textContent = '👁';
+      }
+    }
+
+    const newPw = document.getElementById('newPassword');
+    const confPw = document.getElementById('confirmPassword');
+    const hint = document.getElementById('pwMatchHint');
+    const btn = document.getElementById('changePwBtn');
+
+    function checkMatch() {
+      if (confPw.value && newPw.value !== confPw.value) {
+        hint.style.display = 'block';
+        btn.disabled = true;
+        btn.style.opacity = '0.6';
+      } else {
+        hint.style.display = 'none';
+        btn.disabled = false;
+        btn.style.opacity = '1';
+      }
+    }
+    newPw.addEventListener('input', checkMatch);
+    confPw.addEventListener('input', checkMatch);
+  </script>
+</body>
+</html>

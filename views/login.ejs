@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title><%= title %></title>
+  <link rel="stylesheet" href="/style.css" />
+</head>
+<body>
+
+  <header class="site-header">
+    <div class="container">
+      <div class="logo"><a href="/">🎯 Hobby Hub</a></div>
+      <nav class="main-nav">
+        <ul class="nav-list">
+          <li><a href="/"          class="nav-link">Home</a></li>
+          <li><a href="/explore"   class="nav-link">Explore</a></li>
+          <li><a href="/community" class="nav-link">Community</a></li>
+          <li><a href="/login"     class="nav-link active">Login</a></li>
+          <li><a href="/register"  class="nav-link">Register</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main class="auth-page">
+    <div class="auth-card">
+      <div class="auth-icon">🔑</div>
+      <h1 class="auth-title">Welcome Back</h1>
+      <p class="auth-subtitle">Sign in to your Hobby Hub account</p>
+
+      <% if (error) { %>
+        <div class="alert alert-error">❌ <%= error %></div>
+      <% } %>
+      <% if (success) { %>
+        <div class="alert alert-success">✅ <%= success %></div>
+      <% } %>
+
+      <form action="/login" method="POST" id="loginForm" novalidate>
+        <div class="form-group">
+          <label class="form-label">Username or Email <span class="required">*</span></label>
+          <input type="text" name="username" id="loginUser" class="form-input"
+                 placeholder="Enter username or email" autocomplete="username" />
+          <span class="field-error" id="errUser"></span>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Password <span class="required">*</span></label>
+          <input type="password" name="password" id="loginPass" class="form-input"
+                 placeholder="Enter your password" autocomplete="current-password" />
+          <span class="field-error" id="errPass"></span>
+        </div>
+
+        <button type="submit" class="btn btn-primary btn-large" style="width:100%;margin-top:4px;">
+          Login →
+        </button>
+      </form>
+
+      <div class="auth-link">
+        Don't have an account? <a href="/register">Register here</a>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    document.getElementById('loginForm').addEventListener('submit', function(e) {
+      let ok = true;
+      const u = document.getElementById('loginUser');
+      const p = document.getElementById('loginPass');
+      document.getElementById('errUser').textContent = '';
+      document.getElementById('errPass').textContent = '';
+      u.style.borderColor = ''; p.style.borderColor = '';
+
+      if (!u.value.trim()) {
+        document.getElementById('errUser').textContent = 'Username or email is required.';
+        u.style.borderColor = '#ef4444'; ok = false;
+      }
+      if (!p.value || p.value.length < 6) {
+        document.getElementById('errPass').textContent = 'Password must be at least 6 characters.';
+        p.style.borderColor = '#ef4444'; ok = false;
+      }
+      if (!ok) e.preventDefault();
+    });
+  </script>
+</body>
+</html>
